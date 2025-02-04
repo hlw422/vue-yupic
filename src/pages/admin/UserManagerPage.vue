@@ -1,5 +1,17 @@
 <template>
     <div id="userManagerPage">
+        <a-form layout="inline" :model="searchParams" @finish="doSearch">
+            <a-form-item label="账号">
+                <a-input v-model:value="searchParams.userAccount" placeholder="输入账号" />
+            </a-form-item>
+            <a-form-item label="用户名">
+                <a-input v-model:value="searchParams.userName" placeholder="输入用户名" />
+            </a-form-item>
+            <a-form-item>
+                <a-button type="primary" html-type="submit">搜索</a-button>
+            </a-form-item>
+        </a-form>
+
         <a-table :columns="columns" :data-source="dataList" :pagination="pagination" @change="doTableChange">
 
             <template #bodyCell="{ column, record }">
@@ -18,14 +30,20 @@
                     {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
                 </template>
                 <template v-else-if="column.key === 'action'">
-                    <a-button danger>删除</a-button>
+                    <a-popconfirm 
+                        title="确认删除该用户吗？" 
+                        @confirm="() => deleteUser(record.id)" 
+                        ok-text="确认" 
+                        cancel-text="取消">
+                        <a-button danger>删除</a-button>
+                    </a-popconfirm>
                 </template>
             </template>
         </a-table>
     </div>
 </template>
 <script lang="ts" setup>
-import { listUserVoByPageUsingPost } from '@/api/userController';
+import { deleteUserUsingPost, listUserVoByPageUsingPost } from '@/api/userController';
 import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import dayjs from 'dayjs';
@@ -107,6 +125,25 @@ const getUsers = async () => {
         total.value = parseInt(res.data.data.total, 10) ?? 0;
     } else {
         message.error('获取用户列表失败：' + res.data.message);
+    }
+}
+
+const doSearch = () => {
+    // 重置页码
+    searchParams.current = 1
+    getUsers();
+}
+
+const deleteUser = async (id: number) => {
+    if (!id) {
+        return;
+    }
+    const res = await deleteUserUsingPost({ id })
+    if (res.data.code == 0) {
+        message.success('删除用户成功');
+        getUsers();
+    } else {
+        message.error('删除用户失败：' + res.data.message);
     }
 }
 
