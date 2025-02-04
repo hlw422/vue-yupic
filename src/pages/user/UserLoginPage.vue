@@ -23,11 +23,11 @@
 <script lang="ts" setup>
 import { userLoginUsingPost } from '@/api/userController';
 import { reactive } from 'vue';
-import { useCounterStore } from '@/stores/useLoginUserStore.ts';
+import { useLoginUserStore } from '@/stores/useLoginUserStore.ts';
 import { message } from 'ant-design-vue';
 import router from '@/router';
 
-const loginUserStore = useCounterStore();
+const loginUserStore = useLoginUserStore();
 
 const formState = reactive<API.UserLoginRequest>({
     userAccount: '',

@@ -40,14 +40,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { h, ref } from 'vue'
+import { computed, h, ref } from 'vue'
 import { HomeOutlined, LogoutOutlined } from '@ant-design/icons-vue'
 import { MenuProps, message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 
-import { useCounterStore } from '@/stores/useLoginUserStore.ts';
+import { useLoginUserStore } from '@/stores/useLoginUserStore.ts';
 import { userLogoutUsingPost } from '@/api/userController';
-const loginUserStore = useCounterStore();
+const loginUserStore = useLoginUserStore();
 
 const router = useRouter()
 const current = ref<string[]>(['/'])
@@ -58,7 +58,7 @@ const handleClick = ({ key }: { key: string }) => {
 router.afterEach((to, from, next) => {
   current.value = [to.path]
 })
-const items = ref<MenuProps['items']>([
+const OriginalMenuitems = ref<MenuProps['items']>([
   {
     key: '/',
     icon: () => h(HomeOutlined),
@@ -76,6 +76,21 @@ const items = ref<MenuProps['items']>([
     title: '编程导航',
   },
 ])
+// 过滤菜单项
+const filterMenus = (menus = [] as MenuProps['items']) => {
+  return menus?.filter((menu) => {
+    if (menu.key.startsWith('/admin')) {
+      const loginUser = loginUserStore.loginUser
+      if (!loginUser || loginUser.userRole !== "admin") {
+        return false
+      }
+    }
+    return true
+  })
+}
+
+const items=computed(() => 
+  filterMenus(OriginalMenuitems.value));
 
 const logout = async () => {
   const res = await userLogoutUsingPost();
