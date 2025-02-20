@@ -107,4 +107,10 @@ const beforeUpload = (file: UploadProps['fileList'][number]) => {
   margin-top: 8px;
   color: #666;
 }
+
+.picture-uploader img{
+  /**限制图片最大宽度和高度 */
+  max-width: 100%;
+  max-height: 480px;
+}
 </style>

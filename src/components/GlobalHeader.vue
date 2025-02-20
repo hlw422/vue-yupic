@@ -1,6 +1,6 @@
 <template>
   <div id="global-header">
-    <a-row>
+    <a-row :wrap="false">
       <a-col flex="200px">
         <router-link to="/">
           <div class="title-bar">
