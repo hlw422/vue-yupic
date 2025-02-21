@@ -1,9 +1,11 @@
 <template>
     <div id="add-picture-page">
-        <h1 style="margin-bottom: 16px;">创建图片</h1>
+        <h1 style="margin-bottom: 16px;">
+            {{ route.query?.id? '编辑图片' : '创建图片' }}    
+        </h1>
         <PictureUpLoad :picture="picture" :onSuccess="handleSuccess" :onError="handleError" />
         <!--图片信息表单-->
-        <a-form name="picture-form"  layout="vertical" :model="pictureForm" @finish="handleSubmit">
+        <a-form v-if="picture" name="picture-form"  layout="vertical" :model="pictureForm" @finish="handleSubmit">
             <a-form-item name="name" label="图片名称">
                 <a-input v-model:value="pictureForm.name" placeholder="请输入图片名称" />
             </a-form-item>
@@ -27,10 +29,33 @@
 import { onMounted, reactive, ref } from 'vue';
 import PictureUpLoad from '@/components/PictureUpLoad.vue';
 import { message } from 'ant-design-vue';
-import { editPictureUsingPost, listPictureTagCategoryUsingGet } from '@/api/pictureController';
-import { useRouter } from 'vue-router';
+import { editPictureUsingPost, getPictureByIdUsingGet, getPictureVoByIdUsingGet, listPictureTagCategoryUsingGet } from '@/api/pictureController';
+import { useRoute, useRouter } from 'vue-router';
 
+//   路由跳转
 const router = useRouter();
+//获取路由信息
+const route=useRoute();
+
+
+const getoldPicture = async () => {
+    const id = route.query?.id as any
+    console.log("id:",id);    
+    if(!id){
+        return;
+    }
+    const res = await getPictureVoByIdUsingGet({id:id});
+    if(res.data.code === 0&&res.data.data){
+        const data=res.data.data;
+        picture.value=data as any;
+        pictureForm.name=data.name;
+        pictureForm.introduction=data.introduction;
+        pictureForm.category=data.category; 
+        pictureForm.tags=data.tags as any;
+    }
+}
+
+
 const pictureForm = reactive<API.PictureEditRequest>(
     {}
 );
@@ -60,6 +85,7 @@ const getCategoryOptions = async () => {
 
 
 onMounted(() => {
+    getoldPicture();
     getCategoryOptions();
 });
 
