@@ -23,17 +23,33 @@
                         <a-descriptions-item label="宽高比">{{ picture?.picScale ?? "-" }}</a-descriptions-item>
                         <a-descriptions-item label="大小">{{ formatSize(picture?.picSize) }}</a-descriptions-item>
                     </a-descriptions>
+                    <a-space wrap>
+                        <a-button type="primary" @click="downloadPicture">
+                            免费下载
+                        <template #icon>
+                            <DownloadOutlined />
+                        </template>
+                        </a-button>
+                        <a-button v-if="CanEdit" :icon="h(EditOutlined)" type="link" :href="`/add_picture?id=${picture?.id}`"
+                            target="_blank">编辑</a-button>
+                        <a-popconfirm title="确认删除该图片吗？" @confirm="() => deletepicture(picture?.id)" ok-text="确认"
+                            cancel-text="取消">
+                            <a-button v-if="CanEdit" :icon="h(DeleteOutlined)" danger>删除</a-button>
+                        </a-popconfirm>
+                    </a-space>
                 </a-card>
             </a-col>
         </a-row>
     </div>
 </template>
 <script setup lang="ts">
-import { getPictureVoByIdUsingGet } from '@/api/pictureController';
-import { formatSize } from '@/utils';
+import { deletePictureUsingPost, getPictureVoByIdUsingGet } from '@/api/pictureController';
+import { formatSize,downloadImage } from '@/utils';
 import { message } from 'ant-design-vue';
-import { onMounted, ref } from 'vue';
-
+import { computed, onMounted, ref } from 'vue';
+import { EditOutlined, DeleteOutlined, DownloadOutlined } from '@ant-design/icons-vue';
+import { h } from 'vue';
+import { useLoginUserStore } from '@/stores/useLoginUserStore';
 
 interface Props {
     id: string | number
@@ -41,6 +57,44 @@ interface Props {
 const props = defineProps<Props>();
 
 const picture = ref<API.PictureVO>();
+
+//判断能否编辑图片
+const CanEdit = computed(() => {
+    const loginUser = useLoginUserStore().loginUser;
+    if (!loginUser.id) {
+        return;
+    }
+    const user = loginUser || {}
+    return loginUser.id === picture.value?.userId || loginUser.userRole === 'admin'
+}
+)
+
+/**
+ * 下载图片
+ */
+const downloadPicture = () => {
+    const url = picture.value?.url;
+    if (!url) {
+        return;
+    }
+    downloadImage(url, picture.value?.name);
+}
+
+const deletepicture = async () => {
+    const id=picture.value?.id;
+    if (!id) {
+        return;
+    }
+    const res = await deletePictureUsingPost({ id });
+    if (res.data.code === 0) {
+        message.success('删除成功');
+        fetchDetail();
+    }
+    else{
+        message.error('删除失败,' + res.data.message);
+    }
+
+}
 
 const fetchDetail = async () => {
     try {
