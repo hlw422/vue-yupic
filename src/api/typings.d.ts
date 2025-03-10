@@ -196,6 +196,7 @@ declare namespace API {
 
   type PictureUploadRequest = {
     category?: string;
+    fileUrl?: string;
     id?: number;
     introduction?: string;
     name?: string;
@@ -226,8 +227,18 @@ declare namespace API {
     filepath?: string;
   };
 
+  type uploadPictureByUrlUsingPOSTParams = {
+    category?: string;
+    fileUrl?: string;
+    id?: number;
+    introduction?: string;
+    name?: string;
+    tags?: string[];
+  };
+
   type uploadPictureUsingPOSTParams = {
     category?: string;
+    fileUrl?: string;
     id?: number;
     introduction?: string;
     name?: string;
