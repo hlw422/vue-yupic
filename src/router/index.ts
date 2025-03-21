@@ -6,6 +6,7 @@ import HomePage from '@/pages/HomePage.vue'
 import AddPicturePage from '@/pages/picture/AddPicturePage.vue'
 import PictureManagerPage from '@/pages/picture/PictureManagerPage.vue'
 import PictureDetailPage from '@/pages/picture/PictureDetailPage.vue'
+import CardPage from '@/pages/css/cardPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,11 @@ const router = createRouter({
       name: '图片详情',
       component: PictureDetailPage,
       props: true
+    },
+    {
+      path: '/css_demo',
+      name: 'Css 样式',
+      component: CardPage,
     },
   ],
   

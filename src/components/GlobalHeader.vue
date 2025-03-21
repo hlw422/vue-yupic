@@ -85,6 +85,11 @@ const OriginalMenuitems = ref<MenuProps['items']>([
     label: h('a', { href: 'https://www.codefather.cn', target: '_blank' }, '编程导航'),
     title: '编程导航',
   },
+  {
+    key: '/css_demo',
+    label: 'CSS 动画',
+    title: 'cSS动画'
+  },
 ])
 // 过滤菜单项
 const filterMenus = (menus = [] as MenuProps['items']) => {
