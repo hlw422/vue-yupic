@@ -5,6 +5,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseInt_ = {
+    code?: number;
+    data?: number;
+    message?: string;
+  };
+
   type BaseResponseLoginUserVO_ = {
     code?: number;
     data?: LoginUserVO;
@@ -194,12 +200,18 @@ declare namespace API {
     tagList?: string[];
   };
 
+  type PictureUploadByBatchRequest = {
+    count?: number;
+    namePrefix?: string;
+    searchText?: string;
+  };
+
   type PictureUploadRequest = {
     category?: string;
     fileUrl?: string;
     id?: number;
     introduction?: string;
-    name?: string;
+    picName?: string;
     tags?: string[];
   };
 
@@ -232,7 +244,7 @@ declare namespace API {
     fileUrl?: string;
     id?: number;
     introduction?: string;
-    name?: string;
+    picName?: string;
     tags?: string[];
   };
 
@@ -241,7 +253,7 @@ declare namespace API {
     fileUrl?: string;
     id?: number;
     introduction?: string;
-    name?: string;
+    picName?: string;
     tags?: string[];
   };
 

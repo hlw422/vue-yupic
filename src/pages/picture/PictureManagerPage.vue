@@ -1,5 +1,12 @@
 <template>
     <div id="pictureManagerPage">
+        <a-flex justify="space-between">
+            <h2>图片管理</h2>
+            <a-space>
+                <a-button type="primary" href="/add_picture" target="_blank">+创建图片</a-button>
+                <a-button type="primary" href="/add_picture/batch" target="_blank" ghost>+批量创建图片</a-button>
+            </a-space>
+        </a-flex>
         <a-form layout="inline" :model="searchParams" @finish="doSearch">
             <a-form-item label="关键词">
                 <a-input v-model:value="searchParams.searchText" placeholder="从名称和简介搜索" />
@@ -95,7 +102,7 @@ const isRejectModalVisible = ref(false);
 const rejectReasonModalStatus = ref(0);
 const rejectReason = ref('');
 
-const reviewMessage=ref('');
+const reviewMessage = ref('');
 
 const currentPicId = ref<number>(0);
 
@@ -104,7 +111,7 @@ const handleRejectCancel = () => {
     isRejectModalVisible.value = false;
 }
 const openRejectReasonModal = (record: API.Picture) => {
-    isRejectModalVisible.value=true;
+    isRejectModalVisible.value = true;
     currentPicId.value = record.id;
 }
 
@@ -209,7 +216,7 @@ const doTableChange = (page: any) => {
 const getpictures = async () => {
     const res = await listPictureByPageUsingPost({
         ...searchParams,
-        reviewStatus: searchParams.reviewStatus==-1?"":searchParams.reviewStatus
+        reviewStatus: searchParams.reviewStatus == -1 ? "" : searchParams.reviewStatus
     })
     if (res.data.code == 0 && res.data.data) {
         dataList.value = res.data.data.records ?? [] as any;
@@ -236,15 +243,15 @@ const doSearch = () => {
  * @param status 
  */
 const handleReview = async (record: API.Picture, status: number) => {
-    if(status == PIC_REVIEW_STATUS_ENUM.REJECT){
-        if(!reviewMessage.value){
+    if (status == PIC_REVIEW_STATUS_ENUM.REJECT) {
+        if (!reviewMessage.value) {
             message.error('请输入拒绝原因');
             return;
         }
     }
     try {
         const res = await doPictureReviewUsingPost({
-            id: record.id??currentPicId.value,
+            id: record.id ?? currentPicId.value,
             reviewStatus: status,
             reviewMessage: status == PIC_REVIEW_STATUS_ENUM.PASS ? '管理员审核通过' : reviewMessage.value,
         })
@@ -254,8 +261,8 @@ const handleReview = async (record: API.Picture, status: number) => {
     catch (e: any) {
         message.error('审核失败：' + e.message);
     }
-    reviewMessage.value='';
-    isRejectModalVisible.value=false;
+    reviewMessage.value = '';
+    isRejectModalVisible.value = false;
 }
 
 const deletepicture = async (id: number) => {

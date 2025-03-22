@@ -7,6 +7,7 @@ import AddPicturePage from '@/pages/picture/AddPicturePage.vue'
 import PictureManagerPage from '@/pages/picture/PictureManagerPage.vue'
 import PictureDetailPage from '@/pages/picture/PictureDetailPage.vue'
 import CardPage from '@/pages/css/cardPage.vue'
+import AddPictureBatchPage from '@/pages/picture/AddPictureBatchPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,11 @@ const router = createRouter({
       path: '/css_demo',
       name: 'Css 样式',
       component: CardPage,
+    },
+    {
+      path: '/add_picture/batch',
+      name: '批量创建图片',
+      component: AddPictureBatchPage,
     },
   ],
   
