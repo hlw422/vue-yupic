@@ -8,6 +8,8 @@ import PictureManagerPage from '@/pages/picture/PictureManagerPage.vue'
 import PictureDetailPage from '@/pages/picture/PictureDetailPage.vue'
 import CardPage from '@/pages/css/cardPage.vue'
 import AddPictureBatchPage from '@/pages/picture/AddPictureBatchPage.vue'
+import FlexDesign from '@/pages/css/flexDesign.vue'
+import CssMove from '@/pages/css/cssMove.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +54,16 @@ const router = createRouter({
       path: '/css_demo',
       name: 'Css 样式',
       component: CardPage,
+    },
+    {
+      path: '/flex_demo',
+      name: 'Flex 样式',
+      component: FlexDesign,
+    },
+    {
+      path: '/css_move',
+      name: 'css 动画',
+      component: CssMove,
     },
     {
       path: '/add_picture/batch',

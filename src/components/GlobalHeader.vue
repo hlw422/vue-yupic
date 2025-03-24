@@ -87,8 +87,18 @@ const OriginalMenuitems = ref<MenuProps['items']>([
   },
   {
     key: '/css_demo',
+    label: 'CSS demo',
+    title: 'CSS demo'
+  },
+  {
+    key: '/css_move',
     label: 'CSS 动画',
-    title: 'cSS动画'
+    title: 'CSS 动画'
+  },
+  {
+    key: '/flex_demo',
+    label: 'Flex 布局',
+    title: 'flex 布局'
   },
 ])
 // 过滤菜单项
