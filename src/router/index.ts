@@ -10,6 +10,8 @@ import CardPage from '@/pages/css/cardPage.vue'
 import AddPictureBatchPage from '@/pages/picture/AddPictureBatchPage.vue'
 import FlexDesign from '@/pages/css/flexDesign.vue'
 import CssMove from '@/pages/css/cssMove.vue'
+import Grid from '@/pages/css/grid.vue'
+import FileUpload from '@/pages/css/fileUpload.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -69,6 +71,16 @@ const router = createRouter({
       path: '/add_picture/batch',
       name: '批量创建图片',
       component: AddPictureBatchPage,
+    },
+    {
+      path: '/grid',
+      name: 'grid 布局',
+      component: Grid,
+    },
+    {
+      path: '/fileupload',
+      name: '文件上传',
+      component: FileUpload,
     },
   ],
   

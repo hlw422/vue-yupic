@@ -100,6 +100,16 @@ const OriginalMenuitems = ref<MenuProps['items']>([
     label: 'Flex 布局',
     title: 'flex 布局'
   },
+  {
+    key: '/grid',
+    label: 'grid 布局',
+    title: 'grid 布局'
+  },
+  {
+    key: '/fileupload',
+    label: '文件上传',
+    title: '文件上传'
+  },
 ])
 // 过滤菜单项
 const filterMenus = (menus = [] as MenuProps['items']) => {
